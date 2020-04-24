@@ -1,5 +1,7 @@
 import requests
 
+songer_name = input('请输入你想搜索的歌手名字：\n')
+
 # 引用requests模块
 #伪装请求头
 header = {
@@ -41,7 +43,7 @@ for x in range(1,4):
 
         'n': '10',
 
-        'w': '五月天',
+        'w': songer_name,
 
         'g_tk': '5381',
 
@@ -115,5 +117,8 @@ for x in range(1,4):
         # # 输出的时候标记歌曲所在的页码和id
         # print(lyric)
         print('第{}页的歌曲《{}》,歌词是：{}\n'.format(x, song['name'], lyric))
+
+
+
 
 

@@ -1,2 +1,2 @@
-for i in range(6):
-    print(i)
+pasd = {'ad':'s','fa': [],'qd':'sd'}
+print(pasd)

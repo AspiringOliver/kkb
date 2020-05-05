@@ -1,5 +1,5 @@
 # 导入模块
-import schedule
+import schedule, time
 # 定义一个任务
 def work():
     print('我是定时的任务')

@@ -2,14 +2,17 @@ from email import encoders
 from email.header import Header
 from email.mime.text import MIMEText
 from email.utils import parseaddr, formataddr
-import smtplib
+import smtplib, sys
+sys.path.append('D:\图片\刘慈欣小哥哥')           #系统路径中填写存放.py文件地址，然后通过import方法导入
+from Oliver的机密信息 import myQQ_email_address as from_addr           #从.py文件加载内容
+from Oliver的机密信息 import mySMTP_serve_password as password           #从.py文件加载内容
+
 
 def _format_addr(s):
     name, addr = parseaddr(s)
     return formataddr(( Header(name, 'utf-8').encode(), addr))
 # 输入Email地址和口令:
-from_addr = '3314677250@qq.com'
-password = input('请输入密码：\n')
+
 # 输入SMTP服务器地址:
 smtp_server = 'smtp.qq.com'
 # 输入收件人地址:

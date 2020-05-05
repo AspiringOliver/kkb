@@ -27,3 +27,4 @@ schedule.every().wednesday.at("13:15").do(test)
 # 开始执行任务
 while True:                 #加循环是为了执⾏完⼀次任务后不终⽌运⾏
     schedule.run_pending()  #运行所有可以运行的schedule任务
+    time.sleep(1)           #让程序按秒来检查，如果检查太快，会浪费计算机的资源。

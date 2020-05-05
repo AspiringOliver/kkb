@@ -1,37 +1,40 @@
-# 这段代码在本地执行
-
-from selenium import webdriver #从selenium库中调用webdriver模块
-
+from selenium import webdriver
 import time
 
+driver = webdriver.Chrome()
 
-
-driver = webdriver.Chrome() # 设置引擎为Chrome，从本地打开一个Chrome浏览器
-
-driver.get('https://y.qq.com/n/yqq/song/001qvvgF38HVc4.html') # 访问页面
+driver.get('https://xiaoke.kaikeba.com/example/wordpress/')
 
 time.sleep(2)
 
+title = driver.find_element_by_class_name('entry-title').find_element_by_tag_name('a')
+title.click()  #跳转进入文章详情页
+time.sleep(1)
 
+link_login = driver.find_element_by_class_name('must-log-in').find_element_by_tag_name('a')
+link_login.click()
 
-clickformore = driver.find_element_by_class_name('js_get_more_hot')
+########登录#########
+#输入用户名
+login_user = driver.find_element_by_id("user_login")
+user = input("请输入用户名：")
+login_user.send_keys(user)
+#输入密码
+login_password = driver.find_element_by_id("user_pass")
+pwd = input("请输入密码：")
+login_password.send_keys(pwd)
+#点击登录
+login_confirm = driver.find_element_by_id("wp-submit")
+login_confirm.click()
 
-time.sleep(0.5)
+######进行评论######
+#输入评论内容
+comment_area = driver.find_element_by_id("comment")
+comment = input("请输入你想要评论的内容:")
+comment_area.send_keys(comment)
+#提交评论
+comment_submit = driver.find_element_by_id("submit")
+comment_submit.click()
+time.sleep(3)
 
-clickformore.click()
-
-comments = driver.find_element_by_class_name('js_hot_list').find_elements_by_class_name('js_cmt_li') # 使用class_name找到评论
-
-print(len(comments))
-
-
-
-for i in range(len(comments)): # 循环
-
-    comment = comments[i].find_element_by_tag_name('p') # 找到评论
-
-    print ('评论'+str(i)+':'+comment.text + '\n-------------------------------------------------') # 打印评论
-
-
-
-driver.close() # 关闭浏览器
+driver.close()

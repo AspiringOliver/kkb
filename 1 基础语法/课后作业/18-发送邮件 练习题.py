@@ -9,7 +9,7 @@ def _format_addr(s):
     return formataddr(( Header(name, 'utf-8').encode(), addr))
 # 输入Email地址和口令:
 from_addr = '3314677250@qq.com'
-password = 'mxphbclrplgxcibh'
+password = input('请输入密码：\n')
 # 输入SMTP服务器地址:
 smtp_server = 'smtp.qq.com'
 # 输入收件人地址:

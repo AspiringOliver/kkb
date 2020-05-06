@@ -7,37 +7,32 @@ sys.path.append('D:\图片\刘慈欣小哥哥')           #系统路径中填写
 from Oliver的机密信息 import myQQ_email_address as sender           #从.py文件加载内容
 from Oliver的机密信息 import mySMTP_serve_password as password           #从.py文件加载内容
 
+start_url = 'http://www.weather.com.cn/weather1d/101050101.shtml'
+header = {
+    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.129 Safari/537.36'
+}
+res = requests.get(start_url, headers=header)
 
 
+def weather_spider():
+    if res.status_code == 200:
+        res.encoding = 'utf-8'
+        bs_res = BeautifulSoup(res.text, 'html.parser')
+        # print(bs_res)
+        weather = bs_res.find_all('p', class_='wea')
+        wea0 = weather[0].text
+        wea1 = weather[1].text
+        temperature = bs_res.find_all('p', class_='tem')
+        tem0 = temperature[0].text.replace(' ', '').replace('\n', '')
+        tem1 = temperature[1].text.replace(' ', '').replace('\n', '')
+        # print('白天天气：{}，温度{}'.format(wea0, tem0))
+        # print('晚间天气：{}，温度{}'.format(wea1, tem1))
+        content = '白天天气：{}，温度{}\n晚间天气：{}，温度{}'.format(wea0, tem0, wea1, tem1)
+        return content
 
 
-
-def movie_spider():
-    header = {
-        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.129 Safari/537.36'
-    }
-    url = 'https://movie.douban.com/chart'
-    res_movies = requests.get(url, headers=header)
-    bs_movies = BeautifulSoup(res_movies.text, 'html.parser')
-    list_movies = bs_movies.find_all('div', class_='pl2')
-    list_all = []
-    for movie in list_movies:
-        tag_a = movie.find('a')
-        name = tag_a.text.replace(' ', '').replace('\n', '')
-        # 电影名，使用replace方法去掉多余的空格及换行符
-        url = tag_a['href']
-        # 电影详情页的链接
-        tag_p = movie.find('p', class_='pl')
-        # 提取父级标签中的<p>标签
-        information = tag_p.text.replace(' ', '').replace('\n', '')
-        # 电影基本信息，使用replace方法去掉多余的空格及换行符
-        tag_div = movie.find('div', class_='star clearfix')
-        # 提取父级标签中的<div>标签
-        rating = tag_div.text.replace(' ', '').replace('\n', '')
-        # 电影评分信息，使用replace方法去掉多余的空格及换行符
-        list_all.append(name+url+information+rating)
-        # 将电影名、URL、电影基本信息和电影评分信息，封装为列表，用append方法添加进list_all
-    return list_all
+    else:
+        print('请求失败')
 
 
 def send_emile():
@@ -49,9 +44,7 @@ def send_emile():
     # 连接服务器，第一个参数是服务器地址，第二个参数是SMTP端口号。
     # 以上，皆为连接服务器。
 
-    movie_list = movie_spider()
-    content = '\n'.join(movie_list) #join()函数，列表转字符串
-    print(content)
+    content = weather_spider()
     qqmail.login(sender, password)
     # 登录邮箱，第一个参数为邮箱账号，第二个参数为邮箱密码
     # 以上，皆为登录邮箱。
@@ -76,7 +69,7 @@ def send_emile():
     qqmail.quit()
 
 
-schedule.every(1).seconds.do(send_emile)
+schedule.every(5).seconds.do(send_emile)
 # 开始执行任务
 while True:  # 加循环是为了执⾏完⼀次任务后不终⽌运⾏
     schedule.run_pending()  # 运行所有可以运行的schedule任务

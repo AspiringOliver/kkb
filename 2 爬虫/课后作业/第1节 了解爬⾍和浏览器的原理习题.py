@@ -1,10 +1,9 @@
 import requests as re
-#from bs4 import BeautifulSoup
 
-# res2 = re.get('https://www.baidu.com/img/bd_logo1.png')
-# photo = res2.content
-# with open('bd_logo1.png','ab') as b:
-#     b.write(photo)
+res2 = re.get('https://www.baidu.com/img/bd_logo1.png')
+photo = res2.content
+with open('bd_logo1.png','ab') as b:
+    b.write(photo)
 
 
 #请求头Request Headers
